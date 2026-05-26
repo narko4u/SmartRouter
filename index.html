@@ -1,0 +1,480 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>SmartRouter — Quality-Aware LLM Routing | Empire Labs</title>
+  <link href="https://fonts.googleapis.com/css2?family=Geist:wght@300;400;500;600&family=Geist+Mono:wght@400;500&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --color-bg: #ffffff;
+      --color-text: #171717;
+      --color-text-secondary: #4d4d4d;
+      --color-text-tertiary: #666666;
+      --color-accent: #0072f5;
+      --color-border: rgba(0, 0, 0, 0.08);
+      --color-ring: rgb(235, 235, 235);
+      --color-badge-bg: #ebf5ff;
+      --color-badge-text: #0068d6;
+      --font-sans: 'Geist', system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+      --font-mono: 'Geist Mono', ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, 'Liberation Mono', 'Courier New', monospace;
+      --shadow-border: rgba(0, 0, 0, 0.08) 0px 0px 0px 1px;
+      --shadow-card: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.04) 0px 2px 2px, rgba(0,0,0,0.04) 0px 8px 8px -8px, #fafafa 0px 0px 0px 1px;
+      --radius-sm: 6px;
+      --radius-md: 8px;
+      --radius-lg: 12px;
+    }
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body {
+      font-family: var(--font-sans);
+      color: var(--color-text);
+      background: var(--color-bg);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.5;
+    }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 24px; }
+
+    /* Navigation */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(255,255,255,0.95); backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--color-ring);
+      padding: 16px 0;
+    }
+    nav .container { display: flex; align-items: center; justify-content: space-between; }
+    nav .logo { display: flex; align-items: center; gap: 10px; text-decoration: none; color: var(--color-text); }
+    nav .logo-img { width: 32px; height: 32px; border-radius: var(--radius-sm); background: #171717; display: flex; align-items: center; justify-content: center; color: white; font-size: 14px; font-weight: 600; font-family: var(--font-mono); }
+    nav .logo-text { font-weight: 600; font-size: 16px; letter-spacing: -0.32px; }
+    nav .logo-text span { color: var(--color-text-tertiary); font-weight: 400; }
+    nav .nav-links { display: flex; align-items: center; gap: 32px; }
+    nav .nav-links a { text-decoration: none; color: var(--color-text); font-size: 14px; font-weight: 500; transition: color 0.15s; }
+    nav .nav-links a:hover { color: var(--color-accent); }
+    .btn-cta {
+      background: #171717; color: white !important; padding: 8px 16px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500; text-decoration: none; transition: background 0.15s;
+    }
+    .btn-cta:hover { background: #000 !important; }
+    .btn-ghost {
+      background: transparent; color: var(--color-text); padding: 8px 16px; border-radius: var(--radius-sm);
+      font-size: 14px; font-weight: 500; text-decoration: none;
+      box-shadow: var(--shadow-border); transition: background 0.15s; display: inline-block;
+    }
+    .btn-ghost:hover { background: #fafafa; }
+
+    /* Hero */
+    .hero { padding: 120px 0 80px; text-align: center; }
+    .hero .badge {
+      display: inline-block; background: var(--color-badge-bg); color: var(--color-badge-text);
+      padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 500; margin-bottom: 24px;
+      font-family: var(--font-mono);
+    }
+    .hero h1 {
+      font-size: 64px; font-weight: 600; line-height: 1.05; letter-spacing: -3.2px;
+      max-width: 900px; margin: 0 auto 24px;
+    }
+    .hero h1 span { color: var(--color-accent); }
+    .hero p {
+      font-size: 20px; font-weight: 400; line-height: 1.8; color: var(--color-text-secondary);
+      max-width: 680px; margin: 0 auto 40px;
+    }
+    .hero .cta-row { display: flex; justify-content: center; gap: 12px; flex-wrap: wrap; }
+    .hero .cta-row .btn-cta { padding: 12px 24px; font-size: 16px; }
+    .hero .cta-row .btn-ghost { padding: 12px 24px; font-size: 16px; }
+
+    /* Stats bar */
+    .stats-bar {
+      border-top: 1px solid var(--color-ring); border-bottom: 1px solid var(--color-ring);
+      padding: 48px 0; margin-bottom: 80px;
+    }
+    .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 32px; text-align: center; }
+    .stat-value { font-size: 36px; font-weight: 600; letter-spacing: -1.44px; color: var(--color-text); }
+    .stat-label { font-size: 14px; color: var(--color-text-tertiary); margin-top: 4px; font-weight: 400; }
+
+    /* How it works */
+    .section { padding: 80px 0; }
+    .section-label {
+      font-family: var(--font-mono); font-size: 12px; font-weight: 500; text-transform: uppercase;
+      color: var(--color-text-tertiary); letter-spacing: 0.5px; margin-bottom: 12px;
+    }
+    .section h2 {
+      font-size: 40px; font-weight: 600; line-height: 1.2; letter-spacing: -2.0px;
+      max-width: 600px; margin-bottom: 16px;
+    }
+    .section .subtitle { font-size: 18px; color: var(--color-text-secondary); max-width: 560px; margin-bottom: 48px; }
+
+    /* Architecture diagram as HTML */
+    .arch-section { margin-bottom: 80px; }
+    .arch-flow {
+      display: flex; align-items: center; justify-content: center; gap: 0; flex-wrap: wrap;
+      padding: 48px 0; position: relative;
+    }
+    .arch-node {
+      background: white; border-radius: var(--radius-md); padding: 20px 28px;
+      box-shadow: var(--shadow-card); text-align: center; min-width: 140px; position: relative; z-index: 2;
+    }
+    .arch-node .node-label { font-size: 13px; font-weight: 500; color: var(--color-text); font-family: var(--font-mono); }
+    .arch-node .node-sub { font-size: 11px; color: var(--color-text-tertiary); margin-top: 4px; }
+    .arch-arrow { font-size: 20px; color: var(--color-text-tertiary); padding: 0 8px; z-index: 1; }
+    .arch-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-top: 24px; }
+    .arch-item {
+      background: white; border-radius: var(--radius-md); padding: 24px;
+      box-shadow: var(--shadow-border); text-align: center;
+    }
+    .arch-item h4 { font-size: 16px; font-weight: 600; margin-bottom: 8px; letter-spacing: -0.32px; }
+    .arch-item p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.6; }
+
+    /* Feature cards */
+    .features-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .feature-card {
+      background: white; border-radius: var(--radius-md); padding: 32px;
+      box-shadow: var(--shadow-card); transition: box-shadow 0.2s;
+    }
+    .feature-card:hover { box-shadow: rgba(0,0,0,0.08) 0px 0px 0px 1px, rgba(0,0,0,0.08) 0px 4px 12px; }
+    .feature-card .icon { font-size: 28px; margin-bottom: 16px; }
+    .feature-card h3 { font-size: 20px; font-weight: 600; letter-spacing: -0.8px; margin-bottom: 8px; }
+    .feature-card p { font-size: 14px; color: var(--color-text-secondary); line-height: 1.7; }
+
+    /* Routing table */
+    .routing-table {
+      width: 100%; border-collapse: collapse; border-radius: var(--radius-md); overflow: hidden;
+      box-shadow: var(--shadow-card);
+    }
+    .routing-table th {
+      background: #fafafa; padding: 12px 20px; text-align: left; font-size: 13px; font-weight: 500;
+      font-family: var(--font-mono); color: var(--color-text-tertiary); text-transform: uppercase;
+    }
+    .routing-table td {
+      padding: 14px 20px; font-size: 14px; border-top: 1px solid var(--color-ring);
+    }
+    .routing-table td:first-child { font-weight: 500; }
+    .routing-table .mono { font-family: var(--font-mono); font-size: 13px; color: var(--color-accent); }
+    .routing-table .cost { font-family: var(--font-mono); font-size: 13px; color: var(--color-text-secondary); }
+
+    /* Patent section */
+    .patent-card {
+      background: #fafafa; border-radius: var(--radius-md); padding: 48px;
+      box-shadow: var(--shadow-border); text-align: center; margin-top: 48px;
+    }
+    .patent-card .badge { display: inline-block; background: #171717; color: white; padding: 4px 12px; border-radius: 9999px; font-size: 12px; font-weight: 500; font-family: var(--font-mono); margin-bottom: 16px; }
+    .patent-card h3 { font-size: 24px; font-weight: 600; letter-spacing: -0.96px; margin-bottom: 8px; }
+    .patent-card p { font-size: 14px; color: var(--color-text-secondary); max-width: 600px; margin: 0 auto; }
+
+    /* Pricing */
+    .pricing-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+    .pricing-card {
+      background: white; border-radius: var(--radius-md); padding: 40px 32px;
+      box-shadow: var(--shadow-card); position: relative;
+    }
+    .pricing-card.featured { border: 2px solid var(--color-text); }
+    .pricing-card .tier { font-size: 12px; font-family: var(--font-mono); text-transform: uppercase; color: var(--color-text-tertiary); letter-spacing: 0.5px; }
+    .pricing-card .price { font-size: 40px; font-weight: 600; letter-spacing: -1.6px; margin: 12px 0 4px; }
+    .pricing-card .price span { font-size: 16px; font-weight: 400; color: var(--color-text-tertiary); }
+    .pricing-card .desc { font-size: 14px; color: var(--color-text-secondary); margin-bottom: 24px; }
+    .pricing-card ul { list-style: none; font-size: 14px; line-height: 2.2; }
+    .pricing-card ul li::before { content: "✓ "; color: var(--color-accent); font-weight: 600; }
+    .pricing-card .btn-cta { display: block; text-align: center; margin-top: 24px; padding: 10px; }
+    .pricing-card .btn-ghost { display: block; text-align: center; margin-top: 24px; padding: 10px; }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid var(--color-ring); padding: 48px 0 32px; margin-top: 80px;
+    }
+    footer .container { display: flex; justify-content: space-between; align-items: center; flex-wrap: wrap; gap: 16px; }
+    footer .logo { display: flex; align-items: center; gap: 8px; color: var(--color-text); text-decoration: none; font-weight: 500; font-size: 14px; }
+    footer .logo-img { width: 24px; height: 24px; border-radius: 4px; background: #171717; display: flex; align-items: center; justify-content: center; color: white; font-size: 10px; font-weight: 600; font-family: var(--font-mono); }
+    footer .copyright { font-size: 12px; color: var(--color-text-tertiary); }
+    footer .links { display: flex; gap: 24px; }
+    footer .links a { font-size: 12px; color: var(--color-text-tertiary); text-decoration: none; }
+    footer .links a:hover { color: var(--color-accent); }
+
+    @media (max-width: 768px) {
+      .hero h1 { font-size: 36px; letter-spacing: -1.8px; }
+      .hero p { font-size: 16px; }
+      .stats-grid { grid-template-columns: repeat(2, 1fr); gap: 24px; }
+      .features-grid { grid-template-columns: 1fr; }
+      .arch-grid { grid-template-columns: repeat(2, 1fr); }
+      .pricing-grid { grid-template-columns: 1fr; }
+      nav .nav-links { display: none; }
+      .stats-bar { padding: 32px 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="container">
+      <a href="/" class="logo">
+        <div class="logo-img">EL</div>
+        <div class="logo-text">Empire Labs <span>| SmartRouter</span></div>
+      </a>
+      <div class="nav-links">
+        <a href="#features">Features</a>
+        <a href="#architecture">Architecture</a>
+        <a href="#pricing">Pricing</a>
+        <a href="#patent">Patent</a>
+        <a href="https://github.com/narko4u/SmartRouter" target="_blank">GitHub</a>
+        <a href="mailto:contact@empirelabs.com.au" class="btn-cta">Request API Key</a>
+      </div>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <div class="container">
+      <div class="badge">Patent Pending — AU 2026905005</div>
+      <h1>Route every LLM call to the <span>right provider</span> — not just the cheapest</h1>
+      <p>SmartRouter scores providers across 200+ quality categories and routes each request by quality, cost, and latency in real time. Circuit breaking, cost governance, and hot-reloadable providers — production-ready today.</p>
+      <div class="cta-row">
+        <a href="mailto:contact@empirelabs.com.au" class="btn-cta">Get API Key</a>
+        <a href="https://github.com/narko4u/SmartRouter" target="_blank" class="btn-ghost">View on GitHub →</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Stats -->
+  <section class="stats-bar">
+    <div class="container">
+      <div class="stats-grid">
+        <div>
+          <div class="stat-value">200+</div>
+          <div class="stat-label">Quality Categories</div>
+        </div>
+        <div>
+          <div class="stat-value">5</div>
+          <div class="stat-label">Budget States</div>
+        </div>
+        <div>
+          <div class="stat-value">3</div>
+          <div class="stat-label">Routing Modes</div>
+        </div>
+        <div>
+          <div class="stat-value">1</div>
+          <div class="stat-label">Patent Filed</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Architecture -->
+  <section class="section" id="architecture">
+    <div class="container">
+      <div class="section-label">Architecture</div>
+      <h2>How SmartRouter Works</h2>
+      <p class="subtitle">Every request passes through our quality scoring engine, circuit breaker, and cost governor before being routed to the optimal provider.</p>
+
+      <div class="arch-flow">
+        <div class="arch-node"><div class="node-label">Your App</div><div class="node-sub">HTTP Request</div></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><div class="node-label">Quality Scorer</div><div class="node-sub">200+ categories</div></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><div class="node-label">Circuit Breaker</div><div class="node-sub">CLOSED/OPEN/HALF-OPEN</div></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><div class="node-label">Cost Governor</div><div class="node-sub">5 budget states</div></div>
+        <div class="arch-arrow">→</div>
+        <div class="arch-node"><div class="node-label">Best Provider</div><div class="node-sub">Routed response</div></div>
+      </div>
+
+      <div class="arch-grid">
+        <div class="arch-item">
+          <h4>Quality Scoring</h4>
+          <p>Composite score across code, creative, reasoning, and 200+ fine-grained categories with tunable weights.</p>
+        </div>
+        <div class="arch-item">
+          <h4>Circuit Breaker</h4>
+          <p>State machine detects failing providers, isolates them, and auto-recovers. CLOSED → OPEN → HALF-OPEN.</p>
+        </div>
+        <div class="arch-item">
+          <h4>Cost Governor</h4>
+          <p>Five budget enforcement states: NORMAL → WARN → CRITICAL → HALT → RECOVER. Stay within spend limits.</p>
+        </div>
+        <div class="arch-item">
+          <h4>Provider Registry</h4>
+          <p>Hot-reloadable configuration. Add or remove providers without restarting the router.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Live Routing Example -->
+  <section class="section" id="features">
+    <div class="container">
+      <div class="section-label">Live Example</div>
+      <h2>Different tasks, different providers</h2>
+      <p class="subtitle">SmartRouter doesn't pick a single "best" provider — it picks the right provider for each specific request.</p>
+
+      <table class="routing-table">
+        <thead>
+          <tr>
+            <th>Task</th>
+            <th>Routed To</th>
+            <th>Quality Score</th>
+            <th>Cost</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td>Code generation</td>
+            <td class="mono">deepseek-chat</td>
+            <td>0.875</td>
+            <td class="cost">$0.00014</td>
+          </tr>
+          <tr>
+            <td>Creative writing</td>
+            <td class="mono">gpt-4o</td>
+            <td>0.936</td>
+            <td class="cost">$0.00250</td>
+          </tr>
+          <tr>
+            <td>Budget maths</td>
+            <td class="mono">deepseek-chat</td>
+            <td>0.810</td>
+            <td class="cost">$0.00014</td>
+          </tr>
+          <tr>
+            <td>Long document analysis</td>
+            <td class="mono">claude-3.5-sonnet</td>
+            <td>0.912</td>
+            <td class="cost">$0.00150</td>
+          </tr>
+          <tr>
+            <td>Classification</td>
+            <td class="mono">gpt-4o-mini</td>
+            <td>0.883</td>
+            <td class="cost">$0.00008</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </section>
+
+  <!-- Features -->
+  <section class="section">
+    <div class="container">
+      <div class="section-label">Capabilities</div>
+      <h2>Enterprise-grade routing intelligence</h2>
+      <p class="subtitle">Built for production from day one. SmartRouter includes everything you need to deploy intelligent LLM routing.</p>
+
+      <div class="features-grid">
+        <div class="feature-card">
+          <div class="icon">⚡</div>
+          <h3>Sub-millisecond scoring</h3>
+          <p>Quality scoring completes in under 1ms — no perceptible latency added to your LLM calls.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔒</div>
+          <h3>API key authentication</h3>
+          <p>Bearer token auth built in. Drop-in replacement for any existing provider endpoint.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📊</div>
+          <h3>Real-time stats</h3>
+          <p>Exposes routing metrics and budget state via <span class="mono" style="font-family:var(--font-mono);font-size:13px;">/v1/stats</span> endpoint.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🔄</div>
+          <h3>Hot-reloadable config</h3>
+          <p>Add or remove providers without restarting. Update thresholds live.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">🏗️</div>
+          <h3>Docker + Railway deploy</h3>
+          <p>One-command deploy via Dockerfile. Healthcheck endpoint included.</p>
+        </div>
+        <div class="feature-card">
+          <div class="icon">📡</div>
+          <h3>REST API</h3>
+          <p>OpenAPI-compatible. <span class="mono" style="font-family:var(--font-mono);font-size:13px;">/v1/route</span>, <span class="mono" style="font-family:var(--font-mono);font-size:13px;">/v1/stats</span>, <span class="mono" style="font-family:var(--font-mono);font-size:13px;">/v1/reset</span>.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Patent -->
+  <section class="section" id="patent">
+    <div class="container">
+      <div class="section-label">Intellectual Property</div>
+      <h2>Protected innovation</h2>
+      <p class="subtitle">SmartRouter's composite quality scoring methodology is covered by a provisional patent filed in Australia.</p>
+      <div class="patent-card">
+        <div class="badge">Patent Pending</div>
+        <h3>Australian Provisional Application No. 2026905005</h3>
+        <p>Filed 26 May 2026 by Empire Labs Pty Ltd. Covers the composite quality scoring methodology — how SmartRouter weighs and combines 200+ quality dimensions per task to determine optimal provider selection. Priority date established.</p>
+        <p style="margin-top:12px;font-size:13px;font-family:var(--font-mono);color:var(--color-text-tertiary);">12-month window to file PCT international application</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Pricing -->
+  <section class="section" id="pricing">
+    <div class="container">
+      <div class="section-label">Pricing</div>
+      <h2>Start routing intelligently today</h2>
+      <p class="subtitle">Evaluation API keys available for testing. Enterprise licenses for production deployments.</p>
+
+      <div class="pricing-grid">
+        <div class="pricing-card">
+          <div class="tier">Evaluation</div>
+          <div class="price">Free <span>/ 30 days</span></div>
+          <div class="desc">Try SmartRouter with your own providers.</div>
+          <ul>
+            <li>Full API access</li>
+            <li>All routing modes</li>
+            <li>Up to 10,000 requests</li>
+            <li>Single API key</li>
+            <li>Basic support</li>
+          </ul>
+          <a href="mailto:contact@empirelabs.com.au" class="btn-ghost">Get Key →</a>
+        </div>
+        <div class="pricing-card featured">
+          <div class="tier">Enterprise</div>
+          <div class="price">Custom</div>
+          <div class="desc">Production deployment with SLAs.</div>
+          <ul>
+            <li>Unlimited requests</li>
+            <li>Custom quality categories</li>
+            <li>Multi-key management</li>
+            <li>99.9% uptime SLA</li>
+            <li>Dedicated support</li>
+            <li>On-premise deployment</li>
+            <li>Source access (NDA)</li>
+          </ul>
+          <a href="mailto:contact@empirelabs.com.au" class="btn-cta">Contact Sales</a>
+        </div>
+        <div class="pricing-card">
+          <div class="tier">Partnership</div>
+          <div class="price">Strategic</div>
+          <div class="desc">Embedded or acquisition.</div>
+          <ul>
+            <li>White-label licensing</li>
+            <li>Technology transfer</li>
+            <li>Patent assignment</li>
+            <li>Team integration</li>
+            <li>Custom roadmap</li>
+          </ul>
+          <a href="mailto:contact@empirelabs.com.au" class="btn-ghost">Contact →</a>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Empire Labs footer -->
+  <footer>
+    <div class="container">
+      <div style="display:flex;align-items:center;gap:20px;flex-wrap:wrap;">
+        <a href="/" class="logo">
+          <div class="logo-img">EL</div>
+          <span>Empire Labs</span>
+        </a>
+        <span class="copyright">© 2026 Empire Labs Pty Ltd (ACN 693 862 145)</span>
+      </div>
+      <div class="links">
+        <a href="mailto:contact@empirelabs.com.au">Contact</a>
+        <a href="https://github.com/narko4u/SmartRouter" target="_blank">GitHub</a>
+        <a href="https://github.com/narko4u/SmartRouter-Core" target="_blank">Core Repo</a>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
