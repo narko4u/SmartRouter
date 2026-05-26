@@ -1,13 +1,13 @@
 # SmartRouter
 **Quality-Aware Intelligent LLM Routing Engine**
 
-[![Patent](https://img.shields.io/badge/Patent-AMCZ--2615798943-blue)](PATENT.md)
+[![Patent](https://img.shields.io/badge/Patent-AU%202026905005-blue)](https://ip-australia.ipaustralia.gov.au/)
 [![Status](https://img.shields.io/badge/Status-Active-success)]()
 [![Empire Labs](https://img.shields.io/badge/by-Empire%20Labs-purple)](https://empirelabs.com.au)
 
 **SmartRouter** is a production-grade LLM routing engine that routes every inference request to the optimal provider based on **quality**, **cost**, and **latency** — not just round-robin or cheapest-first.
 
-Built by **Empire Labs Pty Ltd** (ACN 693 862 145). Patent-pending in Australia (AMCZ-2615798943, filed 26 May 2026).
+Built by **Empire Labs Pty Ltd** (ACN 693 862 145). Patent pending — AU 2026905005 (filed 26 May 2026).
 
 ---
 
@@ -106,7 +106,7 @@ curl -X POST https://api.empirelabs.com.au/v1/route \
 
 ## Patent
 
-SmartRouter's composite scoring methodology is protected by Australian Provisional Patent Application **AMCZ-2615798943**. See [PATENT.md](PATENT.md) for full details.
+SmartRouter's composite scoring methodology is protected by Australian Provisional Patent Application **AU 2026905005**.
 
 ---
 
@@ -133,8 +133,8 @@ See [LICENSE](LICENSE) for terms.
 **Empire Labs Pty Ltd**  
 ACN: 693 862 145  
 Email: [contact@empirelabs.com.au](mailto:contact@empirelabs.com.au)  
-Patent: AMCZ-2615798943
+Patent: AU 2026905005
 
 ---
 
-*Built in partnership between Eddie Wade and Sovereign (DeepSeek AI).*
+

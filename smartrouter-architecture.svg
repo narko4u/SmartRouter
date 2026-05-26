@@ -146,6 +146,6 @@
       <rect x="175" y="665" width="22" height="6" rx="2" fill="#fb7185"/><text x="203" y="672" fill="#94a3b8" font-size="8" font-family="JetBrains Mono, monospace">Fallback Flow</text>
       <rect x="310" y="665" width="22" height="6" rx="2" fill="#a78bfa"/><text x="338" y="672" fill="#94a3b8" font-size="8" font-family="JetBrains Mono, monospace">Governance</text>
       <rect x="435" y="665" width="22" height="6" rx="2" fill="#fb923c"/><text x="463" y="672" fill="#94a3b8" font-size="8" font-family="JetBrains Mono, monospace">Provider Opt</text>
-      <text x="690" y="672" fill="#475569" font-size="8" font-family="JetBrains Mono, monospace">Patent ref: AMCZ-2615798943</text>
+      <text x="690" y="672" fill="#475569" font-size="8" font-family="JetBrains Mono, monospace">Patent: AU 2026905005</text>
       <text x="850" y="672" fill="#475569" font-size="8" font-family="JetBrains Mono, monospace">v1.0 | Empire Labs</text>
     </svg>

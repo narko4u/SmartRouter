@@ -133,15 +133,6 @@ Minimises cost while maintaining a minimum quality floor. Use when budget is the
 
 ---
 
-## Pricing Tiers
-
-| Tier | Price | Requests/month | Features |
-|------|-------|---------------|----------|
-| Free | $0 | 10,000 | SmartRouter core, 3 providers |
-| Pro | $15/mo | 100,000 | Advanced routing, quality dashboard |
-| Enterprise | $39/mo | 1,000,000 | Custom scoring, audit logs, SLA |
-| Bundle | $99/mo | Unlimited | SmartRouter + AgentGuard + CostGuard |
-
 ---
 
 ## SDK Examples
@@ -184,5 +175,5 @@ curl -X POST https://api.empirelabs.com.au/v1/route \
 ## Support
 
 - Email: contact@empirelabs.com.au
-- Patent: AMCZ-2615798943 (Filed 26 May 2026)
+- Patent: AU 2026905005 (Filed 26 May 2026)
 - ACN: 693 862 145
