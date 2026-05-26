@@ -1,0 +1,22 @@
+# SmartRouter — Public Repository License
+**Empire Labs Pty Ltd (ACN 693 862 145)**
+
+Copyright (c) 2026 Empire Labs Pty Ltd. All Rights Reserved.
+
+This repository contains **public documentation, architecture diagrams, and API specifications** for SmartRouter — a quality-aware intelligent LLM routing engine.
+
+## What You Can Do
+- **View and share** the README, architecture diagrams, API documentation, and patent summary
+- **Link to** this repository from articles, social media, and presentations
+- **Request an evaluation API key** by emailing contact@empirelabs.com.au
+
+## What Requires a License
+- **Running the SmartRouter engine** in any production or evaluation environment
+- **Modifying, adapting, or creating derivative works** based on the routing algorithms
+- **Commercial use** of the quality scoring methodology, circuit breaker state machine, or cost governance system
+
+The core routing engine is **proprietary** and protected by Australian Provisional Patent Application **AMCZ-2615798943**.
+
+For evaluation, partnership, or licensing inquiries:
+**Email:** contact@empirelabs.com.au
+**Patent:** AMCZ-2615798943
