@@ -7,7 +7,7 @@
 
 **SmartRouter** is a production-grade LLM routing engine that routes every inference request to the optimal provider based on **quality**, **cost**, and **latency** — not just round-robin or cheapest-first.
 
-Built by **Empire Labs Pty Ltd** (ACN 693 862 145). Patent pending — AU 2026905005 (filed 26 May 2026).
+Built by **Empire Labs**. Patent pending — AU 2026905005 (filed 26 May 2026).
 
 ---
 
@@ -130,8 +130,7 @@ See [LICENSE](LICENSE) for terms.
 
 ## Contact
 
-**Empire Labs Pty Ltd**  
-ACN: 693 862 145  
+**Empire Labs**  
 Email: [contact@empirelabs.com.au](mailto:contact@empirelabs.com.au)  
 Patent: AU 2026905005
 
